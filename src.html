@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>加密小工具 · taiwan.wtf</title>
+<meta name="description" content="在你自己的瀏覽器把文字用密碼加密，可貼到嘟文或任何地方。純前端、可離線、標準 AES（CryptoJS / OpenSSL 相容）。">
+<style>
+  :root{
+    --brand:#6364FF; --brand2:#8385FF; --ink:#1B1A2E; --muted:#6b6a86;
+    --bg:#f4f4fb; --card:#ffffff; --line:#e6e6f2; --ok:#1f9d57; --bad:#d63a4f;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:linear-gradient(180deg,#eeeefb,#f7f7fc 240px);
+    color:var(--ink); min-height:100vh;
+    font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',system-ui,sans-serif;
+    padding:24px 16px 48px; line-height:1.6;
+  }
+  .wrap{max-width:640px;margin:0 auto}
+  header{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+  header svg{height:46px;width:auto}
+  .lock{flex:0 0 auto;color:var(--brand)}
+  h1{font-size:18px;margin:18px 0 2px}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;box-shadow:0 6px 24px rgba(40,40,90,.05)}
+  .tabs{display:flex;gap:6px;background:#eeeef7;border-radius:10px;padding:4px;margin-bottom:16px}
+  .tabs button{flex:1;border:0;background:transparent;padding:9px;border-radius:7px;
+    font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;font-family:inherit}
+  .tabs button.on{background:#fff;color:var(--brand);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+  label.field{display:block;font-size:13px;font-weight:700;color:var(--muted);margin:14px 0 6px}
+  textarea,input[type=text],input[type=password]{
+    width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 12px;
+    font-size:15px;font-family:inherit;background:#fcfcff;color:var(--ink);resize:vertical}
+  textarea{min-height:110px}
+  textarea#output{background:#f6f6fc}
+  .pw-row{position:relative}
+  .pw-row button.eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+    border:0;background:none;cursor:pointer;font-size:17px;opacity:.6}
+  .strength{height:5px;border-radius:3px;background:#ececf5;margin-top:7px;overflow:hidden}
+  .strength i{display:block;height:100%;width:0;background:var(--bad);transition:.2s}
+  .opt{display:flex;align-items:flex-start;gap:9px;margin:13px 0;font-size:14px}
+  .opt input{margin-top:4px}
+  .opt small{display:block;color:var(--muted);font-size:12px;margin-top:1px}
+  #tootOpts{border-left:3px solid var(--brand2);padding-left:13px;margin:6px 0 4px}
+  .hidden{display:none !important}
+  .go{width:100%;margin-top:16px;border:0;border-radius:11px;background:var(--brand);
+    color:#fff;font-size:16px;font-weight:800;padding:13px;cursor:pointer;font-family:inherit}
+  .go:active{transform:translateY(1px)}
+  .out-head{display:flex;justify-content:space-between;align-items:center;margin:18px 0 6px}
+  .out-head .len{font-size:12px;font-weight:700;color:var(--muted)}
+  .out-head .len.over{color:var(--bad)}
+  .copy{border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 11px;
+    font-size:13px;font-weight:700;cursor:pointer;color:var(--brand);font-family:inherit}
+  .msg{font-size:13px;margin-top:10px;min-height:18px}
+  .msg.ok{color:var(--ok)} .msg.bad{color:var(--bad)}
+  .note{background:#f0f0fa;border-radius:10px;padding:12px 14px;font-size:12.5px;
+    color:var(--muted);margin-top:18px;line-height:1.7}
+  .note b{color:var(--ink)}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:22px}
+  footer a{color:var(--brand);text-decoration:none}
+  @media (prefers-color-scheme:dark){
+    :root{--ink:#e9e9f6;--muted:#9b9ab8;--bg:#15141f;--card:#1e1d2b;--line:#2e2d40}
+    body{background:linear-gradient(180deg,#15141f,#1a1926 240px)}
+    .tabs{background:#26253500}.tabs{background:#222134}.tabs button.on{background:#15141f}
+    textarea,input[type=text],input[type=password]{background:#15141f}
+    textarea#output{background:#191826}.copy{background:#15141f}
+    .note{background:#191826}.strength{background:#2e2d40}
+    header svg text[fill="currentColor"]{fill:#e9e9f6}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="lock" title="加密">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </span>
+    <!--LOGO-->
+  </header>
+  <h1>加密小工具</h1>
+  <p class="sub">用密碼把文字加密，貼到嘟文或任何地方；對方有密碼就能解開。加解密全在你的瀏覽器進行。</p>
+
+  <div class="card">
+    <div class="tabs">
+      <button id="tabEnc" class="on" onclick="setMode('encrypt')">🔒 加密</button>
+      <button id="tabDec" onclick="setMode('decrypt')">🔓 解密</button>
+    </div>
+
+    <label class="field" id="inLabel">要加密的文字</label>
+    <textarea id="input" placeholder="在這裡輸入文字…" oninput="onInput()"></textarea>
+
+    <!-- 嘟文模式（只在加密時出現） -->
+    <div id="tootWrap">
+      <div class="opt">
+        <input type="checkbox" id="tootMode" onchange="render()">
+        <div><label for="tootMode"><b>嘟文模式</b>（Mastodon）</label>
+          <small>檢查加密後長度是否在發文上限內，並自動附上 <code>#encrypted-toots</code> 標籤。</small></div>
+      </div>
+      <div id="tootOpts" class="hidden">
+        <label class="field" style="margin-top:4px">提示文字（可選，會顯示在密文上方）</label>
+        <input type="text" id="hint" placeholder="例如：給小明 🔑" oninput="onInput()">
+        <div class="opt" style="margin-bottom:0">
+          <input type="checkbox" id="marker" onchange="onInput()">
+          <div><label for="marker">加一行給沒有工具的人看的說明</label>
+            <small>🔒這是加密訊息，詳見 lock.taiwan.wtf（會多佔字數）</small></div>
+        </div>
+      </div>
+    </div>
+
+    <label class="field" id="pwLabel">密碼</label>
+    <div class="pw-row">
+      <input type="password" id="pw" placeholder="輸入密碼" oninput="onPw()">
+      <button class="eye" onclick="togglePw()" title="顯示/隱藏">👁</button>
+    </div>
+    <div class="strength" id="strWrap"><i id="strBar"></i></div>
+
+    <button class="go" id="goBtn" onclick="run()">加密</button>
+    <div class="msg" id="msg"></div>
+
+    <div class="out-head">
+      <span class="field" style="margin:0">結果</span>
+      <span>
+        <span class="len" id="len"></span>
+        <button class="copy" onclick="copyOut()">複製</button>
+      </span>
+    </div>
+    <textarea id="output" readonly placeholder="結果會出現在這裡…"></textarea>
+  </div>
+
+  <div class="note">
+    <b>🔐 安全說明</b><br>
+    · 加密、解密完全在你的瀏覽器執行，<b>密碼與內容不會傳到任何伺服器</b>（可開瀏覽器開發者工具的「網路」分頁自行確認）。<br>
+    · 採用標準 <b>AES-256-CBC（CryptoJS / OpenSSL 相容）</b>，因此你也能用其他標準工具解開，不被本工具綁定。<br>
+    · 安全強度取決於密碼——<b>請用夠長、夠隨機的密碼</b>。<br>
+    · 可<a href="#" onclick="return false">下載本頁離線使用</a>（存成 .html 直接開即可，完全不需連網）。
+  </div>
+
+  <footer>
+    台灣幹網 · <a href="https://taiwan.wtf">taiwan.wtf</a> ·
+    <a href="https://github.com/etwu/lock_taiwan_wtf" id="ghLink">原始碼</a>
+  </footer>
+</div>
+
+<!--CRYPTOJS_INLINE-->
+
+<script>
+const MAX_TOOT = 1000;                 // 與站台 MAX_TOOT_CHARS 一致
+const TAG = '#encrypted-toots';
+const MARKER = '🔒這是加密訊息，詳見 lock.taiwan.wtf';
+const MAGIC = /U2FsdGVkX1[A-Za-z0-9+/=]+/;   // CryptoJS / OpenSSL "Salted__" 的 Base64 開頭
+let mode = 'encrypt';
+
+const $ = id => document.getElementById(id);
+const mlen = s => [...(s||'')].length;        // 近似 Mastodon 字數（碼點）
+
+function setMode(m){
+  mode = m;
+  $('tabEnc').classList.toggle('on', m==='encrypt');
+  $('tabDec').classList.toggle('on', m==='decrypt');
+  $('goBtn').textContent = m==='encrypt' ? '加密' : '解密';
+  $('inLabel').textContent = m==='encrypt' ? '要加密的文字'
+    : '貼上密文、整則嘟文、或嘟文網址';
+  $('input').placeholder = m==='encrypt' ? '在這裡輸入文字…'
+    : '貼上 U2FsdGVkX1… 密文，或整則嘟文，或 https://…/嘟文網址';
+  $('tootWrap').classList.toggle('hidden', m!=='encrypt');
+  $('output').value=''; $('msg').textContent=''; $('len').textContent='';
+  render();
+}
+
+function render(){
+  const tm = mode==='encrypt' && $('tootMode').checked;
+  $('tootOpts').classList.toggle('hidden', !$('tootMode').checked);
+  onInput();
+}
+
+// 不需實際加密即可預估 CryptoJS 密文長度（只跟明文位元組數有關）
+function predictCipherLen(text){
+  const n = new TextEncoder().encode(text).length;
+  const padded = 16*(Math.floor(n/16)+1);     // PKCS#7：一定補滿一個區塊
+  const raw = 16 + padded;                      // "Salted__"(8)+salt(8)+密文
+  return 4*Math.ceil(raw/3);                    // Base64
+}
+
+function predictTootTotal(text){
+  let total = predictCipherLen(text);
+  const hint = $('hint').value.trim();
+  if(hint) total += mlen(hint) + 1;             // +換行
+  if($('marker').checked) total += 1 + mlen(MARKER);
+  total += 1 + mlen(TAG);
+  return total;
+}
+
+function onInput(){
+  if(mode==='encrypt' && $('tootMode').checked){
+    const t = predictTootTotal($('input').value);
+    const el = $('len');
+    el.textContent = `加密後 ${t} / ${MAX_TOOT}`;
+    el.classList.toggle('over', t>MAX_TOOT);
+  } else {
+    $('len').textContent='';
+  }
+}
+
+function onPw(){
+  const v = $('pw').value;
+  let s = Math.min(v.length/16,1)*0.5;
+  if(/[a-z]/.test(v)&&/[A-Z]/.test(v)) s+=0.15;
+  if(/\d/.test(v)) s+=0.15;
+  if(/[^A-Za-z0-9]/.test(v)) s+=0.2;
+  s=Math.min(s,1);
+  const bar=$('strBar');
+  bar.style.width=(v?Math.max(s*100,8):0)+'%';
+  bar.style.background = s>0.75?'var(--ok)':s>0.45?'#e6a23c':'var(--bad)';
+}
+
+function togglePw(){
+  const p=$('pw'); p.type = p.type==='password'?'text':'password';
+}
+
+function buildTootOutput(ct){
+  const parts=[];
+  const hint=$('hint').value.trim();
+  if(hint) parts.push(hint);
+  parts.push(ct);
+  if($('marker').checked) parts.push(MARKER);
+  parts.push(TAG);
+  return parts.join('\n');
+}
+
+function setMsg(text, ok){
+  const m=$('msg'); m.textContent=text;
+  m.className='msg '+(ok?'ok':'bad');
+}
+
+async function run(){
+  setMsg('',true);
+  const pw=$('pw').value;
+  const inp=$('input').value.trim();
+  if(!inp){ setMsg('請先輸入內容。',false); return; }
+  if(!pw){ setMsg('請輸入密碼。',false); return; }
+  if(mode==='encrypt') doEncrypt(inp,pw); else await doDecrypt(inp,pw);
+}
+
+function doEncrypt(text,pw){
+  const ct = CryptoJS.AES.encrypt(text,pw).toString();
+  let out = ct;
+  if($('tootMode').checked){
+    out = buildTootOutput(ct);
+    const t = mlen(out);
+    $('len').textContent = `加密後 ${t} / ${MAX_TOOT}`;
+    $('len').classList.toggle('over', t>MAX_TOOT);
+    if(t>MAX_TOOT){
+      $('output').value = out;
+      setMsg(`⚠️ 加密後 ${t} 字，超過發文上限 ${MAX_TOOT} 字，請縮短內容。`,false);
+      return;
+    }
+  }
+  $('output').value = out;
+  setMsg('✓ 已加密。'+($('tootMode').checked?'可直接複製貼到嘟文。':'可貼到任何地方。'),true);
+}
+
+async function doDecrypt(input,pw){
+  let text = input;
+  if(/^https?:\/\//i.test(input)){
+    setMsg('正在抓取嘟文…',true);
+    try { text = await fetchToot(input); }
+    catch(e){ setMsg('抓取失敗：'+e.message,false); return; }
+  }
+  const m = text.match(MAGIC);
+  const blob = m ? m[0] : text;
+  let pt='';
+  try { pt = CryptoJS.AES.decrypt(blob,pw).toString(CryptoJS.enc.Utf8); }
+  catch(e){ pt=''; }
+  if(!pt){
+    setMsg('解密失敗：密碼錯誤，或內容不是有效的密文。',false);
+    $('output').value=''; return;
+  }
+  $('output').value = pt;
+  setMsg('✓ 已解密。',true);
+}
+
+async function fetchToot(url){
+  let u;
+  try{ u=new URL(url); }catch(e){ throw new Error('網址格式不正確'); }
+  const idm = u.pathname.match(/(\d+)\D*$/);
+  if(!idm) throw new Error('無法從網址辨識嘟文 ID，請改貼整則嘟文內容');
+  const api = `${u.origin}/api/v1/statuses/${idm[1]}`;
+  let r;
+  try{ r = await fetch(api,{headers:{'Accept':'application/json'}}); }
+  catch(e){ throw new Error('無法連線（站台未開放跨網域或非公開）'); }
+  if(!r.ok) throw new Error('找不到嘟文（可能非公開或網址有誤）');
+  const d = await r.json();
+  const div=document.createElement('div'); div.innerHTML=d.content||'';
+  return div.textContent||'';
+}
+
+function copyOut(){
+  const v=$('output').value;
+  if(!v) return;
+  navigator.clipboard.writeText(v).then(()=>setMsg('已複製到剪貼簿。',true));
+}
+
+setMode('encrypt');
+</script>
+</body>
+</html>
