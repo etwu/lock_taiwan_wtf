@@ -135,7 +135,7 @@
         <div class="opt" style="margin-bottom:0">
           <input type="checkbox" id="marker" onchange="onInput()">
           <div><label for="marker">加一行給沒有工具的人看的說明</label>
-            <small>🔒這是加密訊息，詳見 lock.taiwan.wtf（會多佔字數）</small></div>
+            <small>🔒這是加密訊息，詳見 https://lock.taiwan.wtf（會多佔字數）</small></div>
         </div>
       </div>
     </div>
@@ -181,12 +181,13 @@
 <script>
 const MAX_TOOT = 1000;                 // 與站台 MAX_TOOT_CHARS 一致
 const TAG = '#encrypted-toots';
-const MARKER = '🔒這是加密訊息，詳見 lock.taiwan.wtf';
+const MARKER = '🔒這是加密訊息，詳見 https://lock.taiwan.wtf';
 const MAGIC = /U2FsdGVkX1[A-Za-z0-9+/=]+/;   // CryptoJS / OpenSSL "Salted__" 的 Base64 開頭
 let mode = 'encrypt';
 
 const $ = id => document.getElementById(id);
-const mlen = s => [...(s||'')].length;        // 近似 Mastodon 字數（碼點）
+// 近似 Mastodon 字數：URL 一律計 23 字，其餘以碼點計
+const mlen = s => [...((s||'').replace(/https?:\/\/[^\s]+/g,'x'.repeat(23)))].length;
 
 function setMode(m){
   mode = m;
