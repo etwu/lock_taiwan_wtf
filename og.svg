@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" font-family="Noto Sans CJK TC, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B5BE6"/>
+      <stop offset="0.55" stop-color="#6566F0"/>
+      <stop offset="1" stop-color="#8385FF"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.18" r="0.7">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- 背景裝飾：淡淡的密文 -->
+  <g fill="#ffffff" opacity="0.10" font-family="monospace" font-size="22" letter-spacing="1">
+    <text x="60" y="500">U2FsdGVkX1+9aQwertyP0o8xZ2k7Lm3nB6vCgH1sD4fJ==</text>
+    <text x="60" y="540">U2FsdGVkX18hY3p0RtUiOpAsDfGhJkLzXcVbNm2q4w6e==</text>
+    <text x="60" y="580">U2FsdGVkX1/Kj5nQ2wE9rT4yU7iO0pL3aS6dF8gH1cV==</text>
+  </g>
+
+  <!-- 鎖頭徽章 -->
+  <g transform="translate(96,150)">
+    <rect width="172" height="172" rx="40" fill="#ffffff"/>
+    <g transform="translate(86,86)" stroke="#6566F0" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="-46" y="-8" width="92" height="62" rx="12" fill="#6566F0" stroke="none"/>
+      <path d="M-30 -8 V-30 a30 30 0 0 1 60 0 V-8"/>
+      <circle cx="0" cy="20" r="9" fill="#ffffff" stroke="none"/>
+      <rect x="-4" y="22" width="8" height="20" rx="4" fill="#ffffff" stroke="none"/>
+    </g>
+  </g>
+
+  <!-- 主標題 -->
+  <text x="316" y="232" fill="#ffffff" font-size="92" font-weight="900" letter-spacing="2">加密小工具</text>
+  <text x="320" y="292" fill="#E8E8FF" font-size="34" font-weight="500">用密碼把文字加密，貼到嘟文或任何地方</text>
+
+  <!-- 特色小標籤 -->
+  <g font-size="26" font-weight="700">
+    <g transform="translate(316,330)">
+      <rect width="150" height="50" rx="25" fill="#ffffff" opacity="0.18"/>
+      <text x="75" y="33" fill="#ffffff" text-anchor="middle">純前端</text>
+    </g>
+    <g transform="translate(478,330)">
+      <rect width="150" height="50" rx="25" fill="#ffffff" opacity="0.18"/>
+      <text x="75" y="33" fill="#ffffff" text-anchor="middle">可離線</text>
+    </g>
+    <g transform="translate(640,330)">
+      <rect width="290" height="50" rx="25" fill="#ffffff" opacity="0.18"/>
+      <text x="145" y="33" fill="#ffffff" text-anchor="middle">標準 AES · 不綁定</text>
+    </g>
+  </g>
+
+  <!-- 網址膠囊 -->
+  <g transform="translate(96,452)">
+    <rect width="540" height="74" rx="37" fill="#1B1A2E"/>
+    <circle cx="44" cy="37" r="9" fill="#FF5C7A"/>
+    <circle cx="74" cy="37" r="9" fill="#FFD23E"/>
+    <circle cx="104" cy="37" r="9" fill="#3FC56B"/>
+    <text x="152" y="48" fill="#ffffff" font-size="32" font-weight="800" letter-spacing="1" font-family="monospace">lock.taiwan.wtf</text>
+  </g>
+
+  <!-- 品牌 -->
+  <text x="96" y="588" fill="#ffffff" opacity="0.85" font-size="26" font-weight="700">台灣幹網 · taiwan.wtf</text>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="79" height="79" viewBox="30 4 200 200" fill="none" role="img" aria-label="台灣幹網">
+  
+  <rect x="80" y="150" width="30" height="48" rx="13" fill="#8385FF"></rect>
+  <rect x="130" y="150" width="30" height="48" rx="13" fill="#8385FF"></rect>
+  
+  <ellipse cx="116" cy="132" rx="70" ry="52" fill="#8385FF"></ellipse>
+  
+  <ellipse cx="170" cy="122" rx="50" ry="50" fill="#8385FF"></ellipse>
+  
+  <path d="M192 150 C190 122 190 102 196 88 C199 81 206 79 211 84 C214 88 213 99 210 107 C206 119 206 134 207 150 Z" fill="#8385FF"></path>
+  
+  <ellipse cx="156" cy="106" rx="30" ry="34" fill="#6566F0"></ellipse>
+  
+  <circle cx="194" cy="116" r="7.2" fill="#ffffff"></circle>
+  <circle cx="196" cy="117" r="3.6" fill="#3B3A78"></circle>
+  
+  <g fill="none" stroke-width="6.2" stroke-linecap="round">
+    <path d="M205 86 C197 54 162 44 136 56" stroke="#FF5C7A"></path>
+    <path d="M207 81 C197 47 156 37 128 51" stroke="#FF9F3E"></path>
+    <path d="M209 76 C198 40 150 30 119 47" stroke="#FFD23E"></path>
+    <path d="M211 71 C199 33 146 24 110 43" stroke="#3FC56B"></path>
+    <path d="M213 66 C200 27 142 17 102 39" stroke="#2F9BFF"></path>
+    <path d="M215 61 C201 20 138 11 94 35" stroke="#9B6BFF"></path>
+  </g>
+  <circle cx="120" cy="40" r="3.4" fill="#FF5C7A"></circle>
+  <circle cx="106" cy="30" r="3" fill="#FFD23E"></circle>
+  <circle cx="132" cy="28" r="2.6" fill="#2F9BFF"></circle>
+  <circle cx="92" cy="46" r="2.8" fill="#9B6BFF"></circle>
+</svg>

@@ -3,8 +3,51 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>加密小工具 · taiwan.wtf</title>
-<meta name="description" content="在你自己的瀏覽器把文字用密碼加密，可貼到嘟文或任何地方。純前端、可離線、標準 AES（CryptoJS / OpenSSL 相容）。">
+<title>加密小工具 · 用密碼加密文字貼到嘟文 | lock.taiwan.wtf</title>
+<meta name="description" content="在你自己的瀏覽器把文字用密碼加密，可貼到 Mastodon 嘟文或任何地方，對方有密碼即可解開。純前端、零網路請求、可離線，採標準 AES（CryptoJS / OpenSSL 相容），不被本工具綁定。台灣幹網提供。">
+<meta name="keywords" content="加密,文字加密,嘟文加密,Mastodon,AES,密碼加密,encrypted toots,lock.taiwan.wtf,台灣幹網,CryptoJS,線上加密,客戶端加密">
+<meta name="author" content="taiwan.wtf 台灣幹網">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#6364FF">
+<link rel="canonical" href="https://lock.taiwan.wtf/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="台灣幹網 taiwan.wtf">
+<meta property="og:title" content="加密小工具 · 用密碼加密文字貼到嘟文">
+<meta property="og:description" content="在你瀏覽器用密碼加密文字，貼到嘟文或任何地方；對方有密碼即可解開。純前端、可離線、標準 AES，不被綁定。">
+<meta property="og:url" content="https://lock.taiwan.wtf/">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://lock.taiwan.wtf/og.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="加密小工具 lock.taiwan.wtf — 用密碼把文字加密，貼到嘟文或任何地方">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="加密小工具 · 用密碼加密文字貼到嘟文">
+<meta name="twitter:description" content="在你瀏覽器用密碼加密文字，貼到嘟文或任何地方；對方有密碼即可解開。純前端、可離線、標準 AES，不被綁定。">
+<meta name="twitter:image" content="https://lock.taiwan.wtf/og.png">
+
+<!-- 結構化資料 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "加密小工具",
+  "url": "https://lock.taiwan.wtf/",
+  "applicationCategory": "SecurityApplication",
+  "operatingSystem": "Any (web browser)",
+  "browserRequirements": "Requires JavaScript",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },
+  "description": "在用戶端瀏覽器用密碼加密文字（AES-256-CBC，CryptoJS / OpenSSL 相容），可貼到 Mastodon 嘟文或任何地方。純前端、零網路請求、可離線。",
+  "inLanguage": "zh-Hant-TW",
+  "isAccessibleForFree": true,
+  "publisher": { "@type": "Organization", "name": "台灣幹網 taiwan.wtf", "url": "https://taiwan.wtf" }
+}
+</script>
 <style>
   :root{
     --brand:#6364FF; --brand2:#8385FF; --ink:#1B1A2E; --muted:#6b6a86;
