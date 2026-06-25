@@ -143,7 +143,7 @@
       <div class="opt">
         <input type="checkbox" id="tootMode" onchange="render()">
         <div><label for="tootMode"><b>嘟文模式</b>（Mastodon）</label>
-          <small>檢查加密後長度是否在發文上限內，並自動附上 <code>#encrypted-toots</code> 標籤。</small></div>
+          <small>檢查加密後長度是否在發文上限內，並自動附上 <code>#encrypted_toots</code> 標籤。</small></div>
       </div>
       <div id="tootOpts" class="hidden">
         <label class="field" style="margin-top:4px">提示文字（可選，會顯示在密文上方）</label>
@@ -194,7 +194,7 @@
 
 <script>
 const MAX_TOOT = 1000;                 // 與站台 MAX_TOOT_CHARS 一致
-const TAG = '#encrypted-toots';
+const TAG = '#encrypted_toots';
 const MARKER = '🔒這是加密訊息，詳見 https://lock.taiwan.wtf';
 const MAGIC = /U2FsdGVkX1[A-Za-z0-9+/=]+/;   // CryptoJS / OpenSSL "Salted__" 的 Base64 開頭
 let mode = 'encrypt';
